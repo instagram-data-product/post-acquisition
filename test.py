@@ -8,7 +8,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-driver.get("https://www.instagram.com/lonepsi")
+driver.get("https://www.instagram.com/")
 html = driver.page_source
 file = open("instagram.html", "w")
 file.write(html)
