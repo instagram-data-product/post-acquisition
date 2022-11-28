@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
-from src.init_utils import accept_cookies, login, save_login_info, turn_off_notifications
+from src.init_utils import accept_cookies, login, save_login_info, turn_off_notifications, search_profile
 
 
 def export_html(driver):
@@ -10,10 +10,6 @@ def export_html(driver):
     file = open("instagram.html", "w")
     file.write(html)
     file.close()
-
-
-def go_to_profile(driver):
-    return None
 
 
 def get_html_from_profile_url():
@@ -24,6 +20,7 @@ def get_html_from_profile_url():
     login(driver)
     save_login_info(driver)
     turn_off_notifications(driver)
+    search_profile(driver)
     export_html(driver)
 
     # Go to a user page
