@@ -33,14 +33,14 @@ def save_login_info(driver):
 
 
 def turn_off_notifications(driver):
-    time.sleep(10)
+    time.sleep(5)
     not_now = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.XPATH, '//button[contains(text(), "Plus tard")]')))
     not_now.click()
 
-    not_now2 = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, '//button[contains(text(), "Plus tard")]')))
-    not_now2.click()
+ #   not_now2 = WebDriverWait(driver, 10).until(
+  #      EC.element_to_be_clickable((By.XPATH, '//button[contains(text(), "Plus tard")]')))
+   # not_now2.click()
 
 
 def search_profile(driver):

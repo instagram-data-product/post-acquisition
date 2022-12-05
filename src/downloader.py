@@ -57,7 +57,7 @@ def download(url):
     for i in range(len(images_unique)):
         # Save each image.jpg file
         name = "image" + str(i) + ".jpg"
-        with open(name, 'wb') as handler:
+        with open(name, 'wb', encoding="utf-8") as handler:
             img_data = requests.get(images_unique[i].get("src")).content
             handler.write(img_data)
 
