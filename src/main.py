@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
-from init_utils import accept_cookies, login, save_login_info, turn_off_notifications, search_profile
+from init_utils import accept_cookies, login, save_login_info, turn_off_notifications, search_profile, select_images_profile
 
 
 def export_html(driver):
@@ -19,13 +19,10 @@ def get_html_from_profile_url():
     accept_cookies(driver)
     login(driver)
     save_login_info(driver)
-    print("ok1")
     turn_off_notifications(driver)
-    print("ok2")
     search_profile(driver)
-    print("ok3")
+    select_images_profile(driver)
     export_html(driver)
-    print("ok4")
 
     # Go to a user page
     # Get all the images (handle the scrolling)
