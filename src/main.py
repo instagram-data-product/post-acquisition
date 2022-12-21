@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
-from init_utils import accept_cookies, login, save_login_info, turn_off_notifications, search_profile, select_images_profile
+from init_utils import accept_cookies, login, save_login_info, turn_off_notifications, search_profile, select_images_profile, download_images
 
 
 def export_html(driver):
@@ -23,7 +23,7 @@ def get_html_from_profile_url():
     turn_off_notifications(driver)
     search_profile(driver)
     select_images_profile(driver)
-    #download_images(driver)
+    download_images(driver)
     export_html(driver)
 
     # Go to a user page
