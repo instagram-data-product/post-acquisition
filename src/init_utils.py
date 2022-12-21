@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 import os
+import urllib.request
 import wget
 
 
@@ -64,19 +65,14 @@ def select_images_profile(driver):
     # select images
     images = driver.find_elements(By.TAG_NAME, "img")
     images = [image.get_attribute("src") for image in images]
-    images = images[:-2]  # slicing-off IG logo and Profile picture
     print("Number of scraped images: ", len(images))
+    print(images)
 
-    # Create a new directory
-    name_file = "images"
-    path = os.getcwd()
-    path = os.path.join(path, name_file)
-    os.mkdir(path)
-    print(path)
-
-    # Download images | A RETRAVAILLER
-    #counter = 0
-    #for image in images:
-    #    save_as = os.path.join(path, name_file + str(counter) + '.jpg')
-    #    wget.download(image, save_as+f'/')
-    #    counter += 1
+def download_images(images, output_folder):
+    image_id = 0
+    for url in images:
+        image_id = image_id + 1
+        img_path = "{}".format(output_folder)
+        if not os.path.exists(img_path):
+            os.makedirs(img_path)
+            urllib.request.urlretrieve(url, "images/img_{}.jpg".format(image_id))

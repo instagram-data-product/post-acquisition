@@ -16,12 +16,14 @@ def get_html_from_profile_url():
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.get("https://www.instagram.com/")
 
+
     accept_cookies(driver)
     login(driver)
     save_login_info(driver)
     turn_off_notifications(driver)
     search_profile(driver)
     select_images_profile(driver)
+    #download_images(driver)
     export_html(driver)
 
     # Go to a user page
