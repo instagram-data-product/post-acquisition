@@ -3,5 +3,4 @@ webdriver-manager==3.8.4
 beautifulsoup4==4.11.1
 requests==2.28.1
 packaging
-wget==3.2
-
+google-cloud-storage==2.7.0
