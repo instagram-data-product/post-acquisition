@@ -3,7 +3,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
 from init_utils import accept_cookies, login, save_login_info, turn_off_notifications, search_profile, \
-    find_and_collect_posts, upload_from_directory
+    find_and_collect_posts, export_to_gcs
 
 LOCAL_IMAGES_FOLDER = "Images"
 GCS_BUCKET_NAME = "instagram_scrapping_bucket"
@@ -20,7 +20,7 @@ def get_html_from_profile_url(username):
     turn_off_notifications(driver)
     search_profile(driver, username)
     find_and_collect_posts(driver)
-    upload_from_directory(LOCAL_IMAGES_FOLDER, GCS_BUCKET_NAME, BLOB_NAME, username)
+    export_to_gcs(LOCAL_IMAGES_FOLDER, GCS_BUCKET_NAME, BLOB_NAME, username)
     # Go to a user page
     # Get all the images (handle the scrolling)
 

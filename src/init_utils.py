@@ -79,30 +79,43 @@ def search_profile(driver, username):
 
 
 def find_and_collect_posts(driver):
-    posts = []
-    links = driver.find_elements(By.TAG_NAME, "a")
+    post_urls = []
+    links = driver.find_elements(By.TAG_NAME, "a")  # Make sure to get all the links
     for link in links:
         post = link.get_attribute('href')
         if '/p/' in post:
-            posts.append(post)
+            post_urls.append(post)
 
-    print(posts)
+    print(post_urls)
 
-    download_url = ''
-    video_path = "Video"
-    for post in posts:
+    for post in post_urls:
         driver.get(post)
-        shortcode = driver.current_url.split("/")[-2]
         time.sleep(2)
         is_img_valid = WebDriverWait(driver, 10).until(EC.element_to_be_clickable(
             (By.CSS_SELECTOR, "img[style='object-fit: cover;']"))) is not None
         if is_img_valid:
-            download_url = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, "img[style='object-fit: cover;']"))).get_attribute('src')
-            urllib.request.urlretrieve(download_url, 'images/{}.jpg'.format(shortcode))
+            download_image(driver)
+        retrieve_post_data()
+        save_to_bigquery()
 
 
-def upload_from_directory(local_directory_path: str, dest_bucket_name: str, dest_blob_name: str, username: str):
+def download_image(driver):
+    shortcode = driver.current_url.split("/")[-2]
+    download_url = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, "img[style='object-fit: cover;']"))).get_attribute('src')
+    urllib.request.urlretrieve(download_url, 'images/{}.jpg'.format(shortcode))
+
+
+def retrieve_post_data():
+    # Retrieve username, likes_num, comments_num, etc...
+    pass
+
+
+def save_to_bigquery():
+    pass
+
+
+def export_to_gcs(local_directory_path: str, dest_bucket_name: str, dest_blob_name: str, username: str):
     storage_client = storage.Client()
     rel_paths = glob.glob(local_directory_path + '/**', recursive=True)
     bucket = storage_client.get_bucket(dest_bucket_name)
