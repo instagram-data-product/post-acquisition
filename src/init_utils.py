@@ -51,6 +51,7 @@ def search_profile(driver, username):
     searchbox.clear()
 
     searchbox.send_keys(username)
+    time.sleep(3)
     searchbox.send_keys(Keys.ENTER)
     time.sleep(3)
     searchbox.send_keys(Keys.ENTER)
