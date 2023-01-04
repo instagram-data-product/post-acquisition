@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "instagram-scrapping-372812",
+  "private_key_id": "2fa75da8aa2f0caffab7f888dfb7a2fec8c93146",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDM6CTq9ElGQYrN\nLuNRvPawwEtWc8K5zejRT2hgz0sjeagn58IbtSrmmxZ1LvBMSrlwuWCk/mSFR+Ob\ndWX2jIlxdRJ8Jo2X13ZzR8/EdCf0COqD/GZMcHAx6CUza6n0j94Hc9LmwMon5up6\nwuzMiHUA6cAuytOGGGPu0zL5Umi1UnFHUJj9rif5Cm1Xl7zmIrO7pcjKTDz3CIsM\nhxRtcNUqsW4wkfkVKGM1Vxgs23gjYMPvFzyF6pgBZ/TTpt4EEmwjxYdkq/T+3QWu\niJF/GW6qS/p5RPTkI6c6uN1oM5WCpQyMt1zLyjphM4dYL87vZJW7FUlFrfeG8wdM\nfiv2cQJXAgMBAAECggEAFBw0g1q2Vk7YcIrJhJwnGfHFcxapZdLvpptEgzvVBAZM\nmp4ETvPY4gkWiymwK8yppoaLFaZh9zK3A+rhtvDUDG6RAd5Gx0A+P9Iscft0cF7v\npUSARcBDQqKmBAXtCDOWduTHLh59uKzRFntLAkfiM9S9J9qAKAj8xdO0jQOpgyIH\nQzhnZyLpP3L/B7SrdvGUHOLCpw7iyscQH+T6MnD4b9BucNrLujFg6wPOr0+2rcrq\ng3YKwYpdfPyQ1PzShdkVhG784+sWTcIVcpxFVeeD0uyAvOJKzlAodOP8ei6lJCW9\n1MkpugGYO6l/ut5n9XjpsX3K/TKNlaTgntawwTVBAQKBgQDrH6sklWjPBegu4b5F\nGLJHy65wQJnaWCAwiEvL3SP+F4L+a9mkYezn8nyglg22LAizA46CtuCuoW3iJfDY\nQGPxnEUODtiHrdZxC+DzyAdU7T2S88vHFQMtALJflYJ5amat9dLoY3kSAHLHwINn\n2eZOlHlXD+I6sIiYMbsGbDFBGwKBgQDfGaZON3Zd80iDcoSlMOZt6LAKdJ7jgn7Y\nVERvHTqTiozBOszYUo0wQqpR5I8cfkkWt0sGj8pEyKa8pYaZZj6VX9cHOsMZiqRi\nI9wn0U41+tB8zK0Xfxan4GA6ZLeBPL7tdDnY5fS69GzfQmoPr5FqZf4n5u2yUn8z\nGI+Uqx/TdQKBgQDOLMrqHYn2X3umAJXUCT/r7RNdo4hGCpjPdfThI114Zi2b4/7J\nQoV3Lw9R0cLcR+io8Sl6PdrvxuaQNCzptCzvpNR461O8RheQsZXkrzaephokTlwW\nirpqL/46CuSKi17WlIUI+pEj0/jSaGHSIyTtKwzr5yW9ySc+Lf2OODlImQKBgFVw\nMzo9Dz2Hj7uXPaktgvGQbOp0Iu0p6n3aN6L95JLgOms9o3kslBlpTmSyTQQycLcc\nVsUah/GzjfcsxNE2UL1PyL9iB5leePmElilBhNwzQ2in0Znv97MuwGtcatI5ezzg\nh87Csehu9srBWnDLYbsHeD+7tkfWRBRDUakzp6qJAoGBAOfRQcCSrFgeL46T/krN\n4su9kBrHUI0KZAmdxpBcPHhuwyZYUzTXqh0HA6p1WbjXJxjL4H9/n9kOlGSYuxa3\nIM3+G+Fr42nXs0ww9RFgth3JN+nq7awZoT2fiSe1dRwJqM6JaJv93CqV67C71ZVW\ngbsjfFAWqsprSbq7E5eC1ReU\n-----END PRIVATE KEY-----\n",
+  "client_email": "cloudstorageinsta@instagram-scrapping-372812.iam.gserviceaccount.com",
+  "client_id": "109006496251604391392",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/cloudstorageinsta%40instagram-scrapping-372812.iam.gserviceaccount.com"
+}

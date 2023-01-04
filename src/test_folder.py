@@ -16,6 +16,6 @@ def upload_from_directory(directory_path: str, dest_bucket_name: str, dest_blob_
 
 path_folder = r'Images'
 gcs_path = "instagram_scrapping_bucket"
-blob_name = "DossierImages"
+blob_name = "DossierImages2"
 
 upload_from_directory(path_folder,gcs_path,blob_name)
