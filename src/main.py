@@ -2,8 +2,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
-from init_utils import accept_cookies, login, save_login_info, turn_off_notifications, search_profile, \
-    find_and_collect_posts, export_to_gcs, select_images_profile
+from init_utils import accept_cookies, login, save_login_info, turn_off_notifications, search_profile,  \
+    scrolling_profile, find_and_collect_posts, export_to_gcs
 from src.test_folder import upload_from_directory
 
 LOCAL_IMAGES_FOLDER = "Images"
@@ -20,7 +20,7 @@ def get_html_from_profile_url(username):
     save_login_info(driver)
     turn_off_notifications(driver)
     search_profile(driver, username)
-    #select_images_profile(driver)
+    scrolling_profile(driver)
     find_and_collect_posts(driver)
     path_folder = r'Images'
     gcs_path = "instagram_scrapping_bucket"
@@ -32,8 +32,7 @@ def get_html_from_profile_url(username):
 
 
 keywords_list = [
-    "ragdoll_brotherz",
-    "lonepsi"
+    "rogerfederer"
 ]
 
 for keywords in keywords_list:

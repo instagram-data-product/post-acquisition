@@ -4,7 +4,7 @@ from google.cloud import storage
 
 #GCS_CLIENT = storage.Client()
 def upload_from_directory(directory_path: str, dest_bucket_name: str, dest_blob_name: str):
-    storage_client = storage.Client.from_service_account_json('ServiceKey_GoogleCloud.json')
+    storage_client = storage.Client.from_service_account_json('D:/Users/Paul/Documents/inge_3/projet_insta/ServiceKey_GoogleCloud.json')
     rel_paths = glob.glob(directory_path + '/**', recursive=True)
     bucket = storage_client.get_bucket(dest_bucket_name)
     #bucket = GCS_CLIENT.bucket(dest_bucket_name)

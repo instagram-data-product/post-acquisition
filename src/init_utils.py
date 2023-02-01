@@ -79,6 +79,19 @@ def select_images_profile(driver):
             urllib.request.urlretrieve(url, "images/img_{}.jpg".format(image_id))
 
 
+def scrolling_profile(driver):
+    scrolldown = driver.execute_script(
+        "window.scrollTo(0, document.body.scrollHeight);var scrolldown=document.body.scrollHeight;return scrolldown;")
+    match = False
+    while (match == False):
+        last_count = scrolldown
+        time.sleep(3)
+        scrolldown = driver.execute_script(
+            "window.scrollTo(0, document.body.scrollHeight);var scrolldown=document.body.scrollHeight;return scrolldown;")
+        if last_count == scrolldown:
+            match = True
+
+
 def find_and_collect_posts(driver):
     post_urls = []
     links = driver.find_elements(By.TAG_NAME, "a")  # Make sure to get all the links
@@ -96,7 +109,7 @@ def find_and_collect_posts(driver):
             (By.CSS_SELECTOR, "img[style='object-fit: cover;']"))) is not None
         if is_img_valid:
             download_image(driver)
-        retrieve_post_data()
+        retrieve_post_data(driver)
         save_to_bigquery()
 
 
@@ -107,9 +120,17 @@ def download_image(driver):
     urllib.request.urlretrieve(download_url, 'images/{}.jpg'.format(shortcode))
 
 
-def retrieve_post_data():
-    # Retrieve username, likes_num, comments_num, etc...
-    pass
+def retrieve_post_data(driver):
+    caption_list = []
+    number_likes_list = []
+    captions = driver.find_element(By.CLASS_NAME, "_a9zs").text
+    print(captions)
+    caption_list.append(captions)
+    likes = driver.find_element(By.CLASS_NAME, "_aacl._aaco._aacw._aacx._aada._aade").text
+    print(likes)
+    number_likes_list.append(likes)
+    # print(caption_list)
+    #print(number_likes_list)
 
 
 def save_to_bigquery():
