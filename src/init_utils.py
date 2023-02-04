@@ -4,6 +4,8 @@ import time
 import urllib.request
 
 from google.cloud import storage
+from google.cloud import bigquery
+from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
@@ -110,7 +112,7 @@ def find_and_collect_posts(driver):
         if is_img_valid:
             download_image(driver)
         retrieve_post_data(driver)
-        save_to_bigquery()
+        #save_to_bigquery()
 
 
 def download_image(driver):
@@ -122,19 +124,37 @@ def download_image(driver):
 
 def retrieve_post_data(driver):
     caption_list = []
-    number_likes_list = []
-    captions = driver.find_element(By.CLASS_NAME, "_a9zs").text
-    print(captions)
-    caption_list.append(captions)
-    likes = driver.find_element(By.CLASS_NAME, "_aacl._aaco._aacw._aacx._aada._aade").text
-    print(likes)
-    number_likes_list.append(likes)
-    # print(caption_list)
-    #print(number_likes_list)
+    caption = driver.find_element(By.CLASS_NAME, "_a9zs").text
+    print(caption)
+    caption_list.append(caption)
+    try:
+        likes_num = driver.find_element(By.CLASS_NAME, "_aacl._aaco._aacw._aacx._aada._aade").text
+    except NoSuchElementException:
+        likes_num = "0"
+    print(likes_num)
+    #save_to_bigquery(likes_num, caption)
 
 
-def save_to_bigquery():
-    pass
+def save_to_bigquery(likes_num, caption):
+    client = bigquery.Client()
+
+    # Prepare the data
+    data = [(likes_num, caption)]
+
+    # Get the existing table
+    dataset_id = "instagram-scrapping-372812"
+    table_id = f"{dataset_id}.posts"
+    table = client.get_table(table_id)
+
+    # Insert data into the table
+    errors = client.insert_rows(table, data)
+
+    # Print the errors if any
+    if errors == []:
+        print("Data sent successfully to BigQuery")
+    else:
+        print(errors)
+
 
 
 def export_to_gcs(local_directory_path: str, dest_bucket_name: str, dest_blob_name: str, username: str):

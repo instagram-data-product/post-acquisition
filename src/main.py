@@ -4,7 +4,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from init_utils import accept_cookies, login, save_login_info, turn_off_notifications, search_profile,  \
     scrolling_profile, find_and_collect_posts, export_to_gcs
-from src.test_folder import upload_from_directory
 
 LOCAL_IMAGES_FOLDER = "Images"
 GCS_BUCKET_NAME = "instagram_scrapping_bucket"
@@ -22,16 +21,14 @@ def get_html_from_profile_url(username):
     search_profile(driver, username)
     scrolling_profile(driver)
     find_and_collect_posts(driver)
-    path_folder = r'Images'
-    gcs_path = "instagram_scrapping_bucket"
-    blob_name = username
-    upload_from_directory(path_folder, gcs_path, blob_name)
-    #export_to_gcs(LOCAL_IMAGES_FOLDER, GCS_BUCKET_NAME, BLOB_NAME, username)
+    export_to_gcs(LOCAL_IMAGES_FOLDER, GCS_BUCKET_NAME, BLOB_NAME, username)
     # Go to a user page
     # Get all the images (handle the scrolling)
 
 
 keywords_list = [
+    "natsuleshiba",
+    "fabwildpix",
     "rogerfederer"
 ]
 
