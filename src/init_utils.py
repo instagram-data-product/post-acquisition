@@ -10,6 +10,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+import pandas as pd
+from google.oauth2.service_account import Credentials
 
 
 def accept_cookies(driver):
@@ -108,7 +110,6 @@ def collect_post(driver):
         if is_img_valid:
             download_image(driver)
         retrieve_post_data(driver)
-        #save_to_bigquery()
 
 def download_image(driver):
     shortcode = driver.current_url.split("/")[-2]
@@ -118,39 +119,69 @@ def download_image(driver):
 
 def retrieve_post_data(driver):
     caption_list = []
+<<<<<<< Updated upstream
     try:
         caption = driver.find_element(By.CLASS_NAME, "_a9zs").text
     except NoSuchElementException:
         caption = "no captions"
     print(caption)
     #caption_list.append(caption)
+=======
+    likes_list = []
+    caption = driver.find_element(By.CLASS_NAME, "_a9zs").text
+    print(caption)
+    caption_list.append(caption)
+    print(caption_list)
+>>>>>>> Stashed changes
     try:
         likes_num = driver.find_element(By.CLASS_NAME, "_aacl._aaco._aacw._aacx._aada._aade").text
     except NoSuchElementException:
         likes_num = "0"
     print(likes_num)
-    #save_to_bigquery(likes_num, caption)
-
+    likes_list.append(likes_num)
+    print(likes_list)
+    save_to_bigquery(likes_list, caption)
 
 def save_to_bigquery(likes_num, caption):
-    client = bigquery.Client()
+    # Créez un DataFrame pandas à partir de vos listes
+    df = pd.DataFrame({'likes_num': likes_num, 'caption': caption})
+
+    # Exporter le DataFrame dans BigQuery
+    from google.cloud import bigquery
+
+    # Chargez vos informations d'identification depuis un fichier JSON
+    credentials = Credentials.from_service_account_file(
+        'Emplacement_ClefDeService')
+
+    # Instanciez un client BigQuery en utilisant vos informations d'identification
+    client = bigquery.Client(credentials=credentials)
+
+    # Définissez le nom de votre table BigQuery
+    table_id = "your_dataset.Insta_Scrapping"
+
+    # Écrivez le DataFrame dans la table BigQuery
+    df.to_gbq(table_id, client.project, if_exists='append')
+
+
+#def save_to_bigquery(likes_num, caption):
+#    client = bigquery.Client()
 
     # Prepare the data
-    data = [(likes_num, caption)]
+#    data = [(likes_num, caption)]
 
     # Get the existing table
-    dataset_id = "instagram-scrapping-372812"
-    table_id = f"{dataset_id}.posts"
-    table = client.get_table(table_id)
+#    dataset_id = "instagram-scrapping-372812"
+ #   table_id = f"{dataset_id}.posts"
+  #  table = client.get_table(table_id)
 
     # Insert data into the table
-    errors = client.insert_rows(table, data)
+   # errors = client.insert_rows(table, data)
 
     # Print the errors if any
-    if errors == []:
-        print("Data sent successfully to BigQuery")
-    else:
-        print(errors)
+    #if errors == []:
+     #   print("Data sent successfully to BigQuery")
+    #else:
+     #   print(errors)
 
 
 
@@ -158,7 +189,7 @@ def export_to_gcs(local_directory_path: str, dest_bucket_name: str, dest_blob_na
     storage_client = storage.Client()
     rel_paths = glob.glob(local_directory_path + '/**', recursive=True)
     bucket = storage_client.get_bucket(dest_bucket_name)
-    # bucket = GCS_CLIENT.bucket(dest_bucket_name)
+    #bucket = GCS_CLIENT.bucket(dest_bucket_name)
     for local_file in rel_paths:
         remote_path = f'{dest_blob_name}/{username}/{"/".join(local_file.split(os.sep)[1:])}'
         if os.path.isfile(local_file):

@@ -5,7 +5,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from init_utils import accept_cookies, login, save_login_info, turn_off_notifications, search_profile,  \
     export_to_gcs, collect_post
 
-LOCAL_IMAGES_FOLDER = "Images"
+LOCAL_IMAGES_FOLDER = r"Images"
 GCS_BUCKET_NAME = "instagram_scrapping_bucket"
 BLOB_NAME = "posts"
 
@@ -26,7 +26,13 @@ def get_html_from_profile_url(username):
 
 
 keywords_list = [
+<<<<<<< Updated upstream
     "natsuleshiba"
+=======
+    #"ragdoll_brotherz",
+    #"kendricklamar"
+    "rogerfederer"
+>>>>>>> Stashed changes
 ]
 
 for keywords in keywords_list:
