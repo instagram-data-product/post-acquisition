@@ -26,13 +26,8 @@ def get_html_from_profile_url(username):
 
 
 keywords_list = [
-<<<<<<< Updated upstream
-    "natsuleshiba"
-=======
-    #"ragdoll_brotherz",
-    #"kendricklamar"
-    "rogerfederer"
->>>>>>> Stashed changes
+    "kendricklamar"
+
 ]
 
 for keywords in keywords_list:
