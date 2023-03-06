@@ -73,7 +73,7 @@ def scrolling_profile(driver):
         if last_count == scrolldown:
             match = True
 
-def collect_post(driver):
+def collect_post(driver, username):
     # Initialize a list to store the post URLs
     post_urls = []
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -108,14 +108,20 @@ def collect_post(driver):
         is_img_valid = WebDriverWait(driver, 10).until(EC.element_to_be_clickable(
             (By.CSS_SELECTOR, "img[style='object-fit: cover;']"))) is not None
         if is_img_valid:
-            download_image(driver)
+            download_image(driver, username)
         retrieve_post_data(driver)
 
-def download_image(driver):
+def download_image(driver, username):
     shortcode = driver.current_url.split("/")[-2]
     download_url = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.CSS_SELECTOR, "img[style='object-fit: cover;']"))).get_attribute('src')
-    urllib.request.urlretrieve(download_url, 'images/{}.jpg'.format(shortcode))
+
+    folder_name = os.path.join('Images', username)
+    if not os.path.exists(folder_name):
+        os.makedirs(folder_name)
+    file_path = os.path.join(folder_name, '{}.jpg'.format(shortcode))
+    urllib.request.urlretrieve(download_url, file_path)
+
 
 def retrieve_post_data(driver):
     try:
@@ -130,7 +136,7 @@ def retrieve_post_data(driver):
         likes_num = "0"
     print(likes_num)
     likes_list.append(likes_num)
-    #save_to_bigquery(likes_num, caption)
+    save_to_bigquery(likes_list, caption)
 
 def save_to_bigquery(likes_num, caption):
     # Créez un DataFrame pandas à partir de vos listes
@@ -141,7 +147,7 @@ def save_to_bigquery(likes_num, caption):
 
     # Chargez vos informations d'identification depuis un fichier JSON
     credentials = Credentials.from_service_account_file(
-        'Emplacement_ClefDeService')
+        'D:/Users/Paul/Documents/inge_3/projet_insta/key_google/ServiceKey_GoogleCloud.json')
 
     # Instanciez un client BigQuery en utilisant vos informations d'identification
     client = bigquery.Client(credentials=credentials)
