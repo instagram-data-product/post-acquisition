@@ -20,7 +20,7 @@ def get_html_from_profile_url(username):
     turn_off_notifications(driver)
     search_profile(driver, username)
     collect_post(driver, username)
-    export_to_gcs(LOCAL_IMAGES_FOLDER, GCS_BUCKET_NAME, BLOB_NAME, username)
+    #export_to_gcs(LOCAL_IMAGES_FOLDER, GCS_BUCKET_NAME, BLOB_NAME, username)
     # Go to a user page
     # Get all the images (handle the scrolling)
 

@@ -61,6 +61,7 @@ def search_profile(driver, username):
     searchbox.send_keys(Keys.ENTER)
     time.sleep(2)
 
+
 def scrolling_profile(driver):
     scrolldown = driver.execute_script(
         "window.scrollTo(0, document.body.scrollHeight);var scrolldown=document.body.scrollHeight;return scrolldown;")
@@ -72,6 +73,7 @@ def scrolling_profile(driver):
             "window.scrollTo(0, document.body.scrollHeight);var scrolldown=document.body.scrollHeight;return scrolldown;")
         if last_count == scrolldown:
             match = True
+
 
 def collect_post(driver, username):
     # Initialize a list to store the post URLs
@@ -109,7 +111,8 @@ def collect_post(driver, username):
             (By.CSS_SELECTOR, "img[style='object-fit: cover;']"))) is not None
         if is_img_valid:
             download_image(driver, username)
-        retrieve_post_data(driver)
+        retrieve_post_data(driver, username)
+
 
 def download_image(driver, username):
     shortcode = driver.current_url.split("/")[-2]
@@ -123,7 +126,7 @@ def download_image(driver, username):
     urllib.request.urlretrieve(download_url, file_path)
 
 
-def retrieve_post_data(driver):
+def retrieve_post_data(driver, username):
     try:
         caption = driver.find_element(By.CLASS_NAME, "_a9zs").text
     except NoSuchElementException:
@@ -134,13 +137,17 @@ def retrieve_post_data(driver):
         likes_num = driver.find_element(By.CLASS_NAME, "_aacl._aaco._aacw._aacx._aada._aade").text
     except NoSuchElementException:
         likes_num = "0"
+    img_url = driver.current_url
+    print(img_url)
     print(likes_num)
+    print(username)
     likes_list.append(likes_num)
-    save_to_bigquery(likes_list, caption)
+    save_to_bigquery(likes_list, caption, username, img_url)
 
-def save_to_bigquery(likes_num, caption):
+
+def save_to_bigquery(likes_num, caption, username, img_url):
     # Créez un DataFrame pandas à partir de vos listes
-    df = pd.DataFrame({'likes_num': likes_num, 'caption': caption})
+    df = pd.DataFrame({'likes_num': likes_num, 'caption': caption, 'username': username, 'img_url': img_url})
 
     # Exporter le DataFrame dans BigQuery
     from google.cloud import bigquery
@@ -163,7 +170,7 @@ def export_to_gcs(local_directory_path: str, dest_bucket_name: str, dest_blob_na
     storage_client = storage.Client()
     rel_paths = glob.glob(local_directory_path + '/**', recursive=True)
     bucket = storage_client.get_bucket(dest_bucket_name)
-    #bucket = GCS_CLIENT.bucket(dest_bucket_name)
+    # bucket = GCS_CLIENT.bucket(dest_bucket_name)
     for local_file in rel_paths:
         remote_path = f'{dest_blob_name}/{username}/{"/".join(local_file.split(os.sep)[1:])}'
         if os.path.isfile(local_file):
