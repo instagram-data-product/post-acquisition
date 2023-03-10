@@ -165,14 +165,13 @@ def save_to_bigquery(likes_num, caption, username, img_url):
     # Écrivez le DataFrame dans la table BigQuery
     df.to_gbq(table_id, client.project, if_exists='append')
 
-
 def export_to_gcs(local_directory_path: str, dest_bucket_name: str, dest_blob_name: str, username: str):
     storage_client = storage.Client()
-    rel_paths = glob.glob(local_directory_path + '/**', recursive=True)
+    rel_paths = glob.glob(os.path.join(local_directory_path, username) + '/**', recursive=True)
     bucket = storage_client.get_bucket(dest_bucket_name)
     # bucket = GCS_CLIENT.bucket(dest_bucket_name)
     for local_file in rel_paths:
-        remote_path = f'{dest_blob_name}/{username}/{"/".join(local_file.split(os.sep)[1:])}'
         if os.path.isfile(local_file):
+            remote_path = f'{dest_blob_name}/{username}/{"/".join(local_file.split(os.sep)[2:])}'
             blob = bucket.blob(remote_path)
             blob.upload_from_filename(local_file)
