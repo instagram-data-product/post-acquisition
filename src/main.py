@@ -26,9 +26,7 @@ def get_html_from_profile_url(username):
 
 
 keywords_list = [
-    "kendricklamar",
-    "kanyewest"
-
+    "asaprocky"
 ]
 
 for keywords in keywords_list:

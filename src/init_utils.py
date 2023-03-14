@@ -2,6 +2,7 @@ import glob
 import os
 import time
 import urllib.request
+import re
 
 from google.cloud import storage
 from google.cloud import bigquery
@@ -107,7 +108,10 @@ def collect_post(driver, username):
     for post in post_urls:
         driver.get(post)
         time.sleep(2)
-        is_img_valid = WebDriverWait(driver, 10).until(EC.element_to_be_clickable(
+        is_video = len(driver.find_elements(By.CSS_SELECTOR, "video")) > 0
+        if is_video:
+            continue
+        is_img_valid = WebDriverWait(driver, 60).until(EC.element_to_be_clickable(
             (By.CSS_SELECTOR, "img[style='object-fit: cover;']"))) is not None
         if is_img_valid:
             download_image(driver, username)
@@ -116,7 +120,7 @@ def collect_post(driver, username):
 
 def download_image(driver, username):
     shortcode = driver.current_url.split("/")[-2]
-    download_url = WebDriverWait(driver, 10).until(
+    download_url = WebDriverWait(driver, 60).until(
         EC.element_to_be_clickable((By.CSS_SELECTOR, "img[style='object-fit: cover;']"))).get_attribute('src')
 
     folder_name = os.path.join('Images', username)
@@ -131,16 +135,12 @@ def retrieve_post_data(driver, username):
         caption = driver.find_element(By.CLASS_NAME, "_a9zs").text
     except NoSuchElementException:
         caption = "no captions"
-    print(caption)
     likes_list = []
     try:
         likes_num = driver.find_element(By.CLASS_NAME, "_aacl._aaco._aacw._aacx._aada._aade").text
     except NoSuchElementException:
         likes_num = "0"
     img_url = driver.current_url
-    print(img_url)
-    print(likes_num)
-    print(username)
     likes_list.append(likes_num)
     save_to_bigquery(likes_list, caption, username, img_url)
 
