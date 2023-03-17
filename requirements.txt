@@ -9,3 +9,4 @@ google-cloud-bigquery==3.5.0
 google-cloud-vision==3.4.0
 pandas
 pandas-gbq
+nordvpn-switcher

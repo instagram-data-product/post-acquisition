@@ -28,8 +28,8 @@ def login(driver):
     password = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "input[name='password']")))
     username.clear()
     password.clear()
-    username.send_keys("paul.machuel@esme.fr")
-    password.send_keys("Paum18mai*")
+    username.send_keys("maxoucharles@gmail.com")
+    password.send_keys("Bonjour1998@!")
     login = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[type='submit']")))
     login.click()
 
@@ -155,7 +155,7 @@ def save_to_bigquery(likes_num, caption, username, img_url):
 
     # Chargez vos informations d'identification depuis un fichier JSON
     credentials = Credentials.from_service_account_file(
-        'D:/Users/Paul/Documents/inge_3/projet_insta/key_google/ServiceKey_GoogleCloud.json')
+        'D:/ANNEE 5/Projet Instagram Scrapping/ServiceKey_GoogleCloud.json')
 
     # Instanciez un client BigQuery en utilisant vos informations d'identification
     client = bigquery.Client(credentials=credentials)
@@ -176,3 +176,4 @@ def export_to_gcs(local_directory_path: str, dest_bucket_name: str, dest_blob_na
             remote_path = f'{dest_blob_name}/{username}/{"/".join(local_file.split(os.sep)[2:])}'
             blob = bucket.blob(remote_path)
             blob.upload_from_filename(local_file)
+

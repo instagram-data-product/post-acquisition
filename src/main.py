@@ -4,10 +4,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.proxy import Proxy, ProxyType
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium import webdriver
-import random
-
 from init_utils import accept_cookies, login, save_login_info, turn_off_notifications, search_profile,  \
     export_to_gcs, collect_post
+
 
 LOCAL_IMAGES_FOLDER = r"Images"
 GCS_BUCKET_NAME = "instagram_scrapping_bucket"
@@ -51,4 +50,6 @@ keywords_list = [
 for keywords in keywords_list:
     print("Data Acquisition for " + keywords)
     get_html_from_profile_url(keywords)
+
+
 
