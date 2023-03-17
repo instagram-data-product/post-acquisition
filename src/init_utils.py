@@ -13,6 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 import pandas as pd
 from google.oauth2.service_account import Credentials
+import random
 
 
 def accept_cookies(driver):
@@ -112,22 +113,22 @@ def collect_post(driver, username):
         if is_video:
             continue
         is_img_valid = WebDriverWait(driver, 60).until(EC.element_to_be_clickable(
-            (By.CSS_SELECTOR, "img[style='object-fit: cover;']"))) is not None
-        if is_img_valid:
-            download_image(driver, username)
-        retrieve_post_data(driver, username)
+            (By.CSS_SELECTOR, "img[style='object-fit: cover;']")))
+        if not is_img_valid:
+            continue
+        download_image(driver, username)
+        #retrieve_post_data(driver, username)
 
 
 def download_image(driver, username):
     shortcode = driver.current_url.split("/")[-2]
-    download_url = WebDriverWait(driver, 60).until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, "img[style='object-fit: cover;']"))).get_attribute('src')
-
+    download_url = driver.find_element(By.CSS_SELECTOR, "img[style='object-fit: cover;']").get_attribute('src')
     folder_name = os.path.join('Images', username)
     if not os.path.exists(folder_name):
         os.makedirs(folder_name)
     file_path = os.path.join(folder_name, '{}.jpg'.format(shortcode))
     urllib.request.urlretrieve(download_url, file_path)
+
 
 
 def retrieve_post_data(driver, username):
