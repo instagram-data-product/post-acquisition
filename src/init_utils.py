@@ -13,6 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 import pandas as pd
 from google.oauth2.service_account import Credentials
+
 import random
 
 
@@ -28,8 +29,10 @@ def login(driver):
     password = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "input[name='password']")))
     username.clear()
     password.clear()
-    username.send_keys("maxoucharles@gmail.com")
-    password.send_keys("Bonjour1998@!")
+    username.send_keys("paul.machuel@esme.fr")
+    time.sleep(3)
+    password.send_keys("Paumm18mai*")
+    time.sleep(2)
     login = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[type='submit']")))
     login.click()
 
@@ -37,7 +40,7 @@ def login(driver):
 def save_login_info(driver):
     time.sleep(2)
     not_now = WebDriverWait(driver, 60).until(
-        EC.element_to_be_clickable((By.XPATH, '//button[contains(text(), "Plus tard")]')))
+        EC.element_to_be_clickable((By.XPATH, '//button[contains(text(), "Enregistrer les identifiants")]')))
     not_now.click()
 
 
@@ -57,24 +60,12 @@ def search_profile(driver, username):
     searchbox.clear()
 
     searchbox.send_keys(username)
-    time.sleep(3)
+    time.sleep(5)
     searchbox.send_keys(Keys.ENTER)
     time.sleep(3)
     searchbox.send_keys(Keys.ENTER)
     time.sleep(2)
 
-
-def scrolling_profile(driver):
-    scrolldown = driver.execute_script(
-        "window.scrollTo(0, document.body.scrollHeight);var scrolldown=document.body.scrollHeight;return scrolldown;")
-    match = False
-    while (match == False):
-        last_count = scrolldown
-        time.sleep(3)
-        scrolldown = driver.execute_script(
-            "window.scrollTo(0, document.body.scrollHeight);var scrolldown=document.body.scrollHeight;return scrolldown;")
-        if last_count == scrolldown:
-            match = True
 
 
 def collect_post(driver, username):
@@ -112,12 +103,12 @@ def collect_post(driver, username):
         is_video = len(driver.find_elements(By.CSS_SELECTOR, "video")) > 0
         if is_video:
             continue
-        is_img_valid = WebDriverWait(driver, 60).until(EC.element_to_be_clickable(
+        is_img_valid = WebDriverWait(driver, 100).until(EC.element_to_be_clickable(
             (By.CSS_SELECTOR, "img[style='object-fit: cover;']")))
         if not is_img_valid:
             continue
         download_image(driver, username)
-        #retrieve_post_data(driver, username)
+        retrieve_post_data(driver, username)
 
 
 def download_image(driver, username):
@@ -138,24 +129,30 @@ def retrieve_post_data(driver, username):
         caption = "no captions"
     likes_list = []
     try:
-        likes_num = driver.find_element(By.CLASS_NAME, "_aacl._aaco._aacw._aacx._aada._aade").text
+        likes_num = driver.find_element(By.CLASS_NAME, "x193iq5w.xeuugli.x1fj9vlw.x13faqbe.x1vvkbs.xt0psk2.x1i0vuye.xvs91rp.x1s688f.x5n08af.x10wh9bi.x1wdrske.x8viiok.x18hxmgj").text
     except NoSuchElementException:
         likes_num = "0"
+    print(likes_num)
     img_url = driver.current_url
+    if "instagram.com/p/" in img_url:
+        # Extraire l'identifiant de publication de l'URL
+        id_url = img_url.split("/")[4].split("?")[0]
+    gs_uri = f"gs://instagram_scrapping_bucket/posts/{username}/{id_url}.jpg"
     likes_list.append(likes_num)
-    save_to_bigquery(likes_list, caption, username, img_url)
+    print(gs_uri)
+    save_to_bigquery(likes_list, caption, username, gs_uri)
 
 
-def save_to_bigquery(likes_num, caption, username, img_url):
+def save_to_bigquery(likes_num, caption, username, gs_uri):
     # Créez un DataFrame pandas à partir de vos listes
-    df = pd.DataFrame({'likes_num': likes_num, 'caption': caption, 'username': username, 'img_url': img_url})
+    df = pd.DataFrame({'likes_num': likes_num, 'caption': caption, 'username': username, 'gs_uri': gs_uri})
 
     # Exporter le DataFrame dans BigQuery
     from google.cloud import bigquery
 
     # Chargez vos informations d'identification depuis un fichier JSON
     credentials = Credentials.from_service_account_file(
-        'D:/ANNEE 5/Projet Instagram Scrapping/ServiceKey_GoogleCloud.json')
+        'D:/Users/Paul/Documents/inge_3/projet_insta/key_google/ServiceKey_GoogleCloud.json')
 
     # Instanciez un client BigQuery en utilisant vos informations d'identification
     client = bigquery.Client(credentials=credentials)
@@ -176,4 +173,5 @@ def export_to_gcs(local_directory_path: str, dest_bucket_name: str, dest_blob_na
             remote_path = f'{dest_blob_name}/{username}/{"/".join(local_file.split(os.sep)[2:])}'
             blob = bucket.blob(remote_path)
             blob.upload_from_filename(local_file)
+
 

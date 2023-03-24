@@ -13,23 +13,7 @@ GCS_BUCKET_NAME = "instagram_scrapping_bucket"
 BLOB_NAME = "posts"
 
 def get_html_from_profile_url(username):
-    # Obtenir une adresse IP de proxy aléatoire
-    proxy_address = "89.46.99.42"
-
-    # Configurer le proxy dans Selenium
-    proxy = Proxy()
-    proxy.proxy_type = ProxyType.MANUAL
-    proxy.http_proxy = proxy_address
-    proxy.ssl_proxy = proxy_address
-    capabilities = DesiredCapabilities.CHROME.copy()
-    proxy.add_to_capabilities(capabilities)
-
-    # Configurer le proxy dans les options de Chrome
-    options = webdriver.ChromeOptions()
-    options.add_argument('--proxy-server={}'.format(proxy_address))
-
-    # Lancer le navigateur avec le proxy configuré
-    driver = webdriver.Chrome(options=options, desired_capabilities=capabilities, service=Service(ChromeDriverManager().install()))
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.get("https://www.instagram.com/")
 
     accept_cookies(driver)
@@ -44,7 +28,7 @@ def get_html_from_profile_url(username):
 
 
 keywords_list = [
-    "kendricklamar"
+    "asaprocky"
 ]
 
 for keywords in keywords_list:
